@@ -1,0 +1,51 @@
+### Signin
+
+POST http://localhost:3000/auth/signin
+Content-Type: application/json
+
+{
+  "email": "test11@test.com",
+  "password": "test11"
+}
+
+### Signout
+
+POST http://localhost:3000/auth/signout
+
+### Create a report
+
+POST http://localhost:3000/reports
+Content-Type: application/json
+
+{
+  "make": "Ford",
+  "model": "Mustang",
+  "year": 1982,
+  "mileage": 50000,
+  "lng": 45,
+  "lat": 45,
+  "price": 20000
+}
+
+### Create an invalid report
+
+POST http://localhost:3000/reports
+Content-Type: application/json
+
+{
+
+}
+
+### Approve a report
+
+PATCH http://localhost:3000/reports/5
+Content-Type: application/json
+
+{
+  "approved": true
+}
+
+### Get estimate
+
+GET http://localhost:3000/reports?make=Ford&model=Mustang&year=1982&mileage=50000&lng=45&lat=45
+Content-Type: application/json

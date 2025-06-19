@@ -1,0 +1,45 @@
+import { DataSource, DataSourceOptions } from 'typeorm';
+import { User } from './users/user.entity';
+import { Report } from './reports/report.entity';
+
+const isTest = process.env.NODE_ENV === 'test';
+const isProd = process.env.NODE_ENV === 'production';
+
+let dataSourceOptions: DataSourceOptions;
+
+const isCompiled = __filename.endsWith('.js');
+const migrationExt = isCompiled ? 'js' : 'ts';
+
+if (isTest) {
+  dataSourceOptions = {
+    type: 'sqlite',
+    database: 'test.sqlite',
+    entities: [User, Report],
+    migrations: [`migrations/*.${migrationExt}`],
+    migrationsRun: true,
+    synchronize: false,
+  } as DataSourceOptions;
+} else if (isProd) {
+  dataSourceOptions = {
+    type: 'postgres',
+    database: process.env.DB_NAME,
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
+    host: process.env.DB_HOST,
+    entities: [User, Report],
+    migrations: [`migrations/*.${migrationExt}`],
+    synchronize: false,
+  } as DataSourceOptions;
+} else {
+  // development
+  dataSourceOptions = {
+    type: 'sqlite',
+    database: 'db.sqlite',
+    entities: [User, Report],
+    migrations: [`migrations/*.${migrationExt}`],
+    synchronize: false,
+  } as DataSourceOptions;
+}
+
+export const AppDataSource = new DataSource(dataSourceOptions);
