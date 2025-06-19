@@ -5,6 +5,10 @@ import { Report } from './reports/report.entity';
 const isTest = process.env.NODE_ENV === 'test';
 const isProd = process.env.NODE_ENV === 'production';
 
+console.log('isTest', isTest);
+console.log('isProd', isProd);
+console.log('process.env.DATABASE_URL', process.env.DATABASE_URL);
+
 let dataSourceOptions: DataSourceOptions;
 
 const isCompiled = __filename.endsWith('.js');
@@ -24,7 +28,7 @@ if (isTest) {
     type: 'postgres',
     url: process.env.DATABASE_URL,
     entities: [User, Report],
-    migrations: [`migrations/*.${migrationExt}`],
+    migrations: [`prod-migrations/*.${migrationExt}`],
     migrationsRun: true,
     synchronize: false,
   } as DataSourceOptions;
